@@ -28,54 +28,6 @@ describe('app routes', () => {
       return client.end(done);
     });
 
-    test('returns todos', async() => {
-
-      const expectation = [
-        {
-          id: 1,
-          to_do: 'Call apartment office',
-          completed: true,
-          user_id: 1
-        },
-      
-        {
-          id: 2,
-          to_do: 'Call Portland Gas and Electric company',
-          completed: false,
-          user_id: 1
-        },
-      
-        {
-          id: 3,
-          to_do: 'Call Comcast',
-          completed: false,
-          user_id: 1
-        },
-      
-        {
-          id: 4,
-          to_do: 'Car Wash',
-          completed: true,
-          user_id: 1
-        },
-      
-        {
-          id: 5,
-          to_do: 'Finish packing',
-          completed: false,
-          user_id: 1
-        }
-      ];
-
-      const data = await fakeRequest(app)
-        .get('/api/todos')
-        .set('Authorization', token)
-        .expect('Content-Type', /json/)
-        .expect(200);
-
-      expect(data.body).toEqual(expectation);
-    });
-
     test('POST /api/todos creates a new todo', async() => {
       const newTodo = {
         to_do: 'Feed Latte',
@@ -92,6 +44,28 @@ describe('app routes', () => {
       expect(todoData.body.to_do).toEqual(newTodo.to_do);
       expect(todoData.body.id).toBeGreaterThan(0);
     });
+
+    test('returns todos', async() => {
+
+      const expectation = 
+       [{
+         id: 6,
+         to_do: 'Feed Latte',
+         completed: true,
+         user_id: 2
+       }];
+      
+
+      const data = await fakeRequest(app)
+        .get('/api/todos')
+        .set('Authorization', token)
+        .expect('Content-Type', /json/)
+        .expect(200);
+
+      expect(data.body).toEqual(expectation);
+    });
+
+  
 
     test('PUT /api/todos/:id updates a todos', async() => {
       const updateTodo = {
